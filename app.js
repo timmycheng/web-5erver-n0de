@@ -3,6 +3,7 @@ const Koa = require('koa');
 const router=require('koa-router')();
 const bodyParser=require('koa-bodyparser');
 const crypto=require('crypto');
+const controller=require('./controller');
 
 
 // 创建一个Koa对象表示web app本身:
@@ -31,33 +32,34 @@ app.use(async(ctx, next) => {
 //     ctx.response.body = '<h1>Hello, koa2!</h1>';
 // });
 
-router.get('/wx',async(ctx,next)=>{
-    // console.log(ctx.query.signature);
-    var token=`baocheng`;
-    var signature=ctx.query.signature;
-    var timestamp=ctx.query.timestamp;
-    var nonce=ctx.query.nonce;
-    var echostr=ctx.query.echostr;
+// verify wx server
+// router.get('/wx',async(ctx,next)=>{
+//     // console.log(ctx.query.signature);
+//     var token=`baocheng`;
+//     var signature=ctx.query.signature;
+//     var timestamp=ctx.query.timestamp;
+//     var nonce=ctx.query.nonce;
+//     var echostr=ctx.query.echostr;
 
-    var array=new Array(token,timestamp,nonce);
-    array.sort();
-    var str=array.toString().replace(/,/g,"");
+//     var array=new Array(token,timestamp,nonce);
+//     array.sort();
+//     var str=array.toString().replace(/,/g,"");
 
-    var sha1Code=crypto.createHash("sha1");
-    var code=sha1Code.update(str,'utf-8').digest("hex");
+//     var sha1Code=crypto.createHash("sha1");
+//     var code=sha1Code.update(str,'utf-8').digest("hex");
 
-    if (code===signature) {
-        ctx.response.body=echostr; 
-    } else {
-        ctx.response.body=`error`;
-    }
+//     if (code===signature) {
+//         ctx.response.body=echostr; 
+//     } else {
+//         ctx.response.body=`error`;
+//     }
 
-});
+// });
 
-router.get('/',async(ctx,next)=>{
-    ctx.response.body=`<h1>Index</h1>`;
-});
-
+// router.get('/',async(ctx,next)=>{
+//     ctx.response.body=`<h1>Index</h1>`;
+// });
+app.use(controller());
 app.use(bodyParser());
 app.use(router.routes());
 
