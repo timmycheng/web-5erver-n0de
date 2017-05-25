@@ -1,17 +1,23 @@
+const crypto=require('crypto');
+
 var verify_wx=async(ctx,next)=>{
-    var token=`baocheng`;
-    var signature=ctx.query.signature;
-    var timestamp=ctx.query.timestamp;
-    var nonce=ctx.query.nonce;
-    var echostr=ctx.query.echostr;
+    if (ctx.query) {
+        var token=`baocheng`;
+        var signature=ctx.query.signature;
+        var timestamp=ctx.query.timestamp;
+        var nonce=ctx.query.nonce;
+        var echostr=ctx.query.echostr;
 
-    var array=new Array(token,timestamp,nonce);
-    array.sort();
-    var str=array.toString().replace(/,/g,"");
+        var array=new Array(token,timestamp,nonce);
+        array.sort();
+        var str=array.toString().replace(/,/g,"");
 
-    var sha1Code=crypto.createHash("sha1");
-    var code=sha1Code.update(str,'utf-8').digest("hex");
-
+        var sha1Code=crypto.createHash("sha1");
+        var code=sha1Code.update(str,'utf-8').digest("hex");
+    }else{
+        ctx.response.body=`error`;
+    }
+    
     if (code===signature) {
         ctx.response.body=echostr; 
     } else {
