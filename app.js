@@ -32,12 +32,12 @@ app.use(async(ctx, next) => {
 // });
 
 router.get('/wx',async(ctx,next)=>{
-    console.log(ctx.request.body);
+    // console.log(ctx.query.signature);
     var token=`baocheng`;
-    var signature=ctx.request.body.signature;
-    var timestamp=ctx.request.body.timestamp;
-    var nonce=ctx.request.body.nonce;
-    var echostr=ctx.request.body.echostr;
+    var signature=ctx.query.signature;
+    var timestamp=ctx.query.timestamp;
+    var nonce=ctx.query.nonce;
+    var echostr=ctx.query.echostr;
 
     var array=new Array(token,timestamp,nonce);
     array.sort();
@@ -62,9 +62,9 @@ app.use(bodyParser());
 app.use(router.routes());
 
 // 在端口3000监听:
-// app.listen(3000);
+app.listen(3000);
 // 改为80端口监听
-app.listen(80);
+// app.listen(80);
 // 打印信息
-// console.log('app started at port 3000...');
-console.log('app started at port 80......')
+console.log('app started at port 3000...');
+// console.log('app started at port 80......')
